@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>BetterDoctor API - Doctor Search</title>
+  
+  
+  
+      <link rel="stylesheet" href="css/style.css">
+      <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>
+
+  
+</head>
+
+<body>
+<h3>Search for Doctor</h3>
+<script id="specialties-template" type="text/x-handlebars-template">
+  <select>
+    <option value="empty" selected></option>
+    {{#data}}
+    <option value="{{uid}}">{{actor}}</option>
+    {{/data}}
+  </select>
+</script>
+<div id="specialties-placeholder"></div>
+
+<h3>BetterDoctor - Doctor Search Results</h3>
+<div id="content-placeholder"></div>
+<script id="docs-template" type="text/x-handlebars-template">
+    <table>
+        <thead>
+            <th>Name</th>
+            <th>Title</th>
+            <th>Picture</th>
+        </thead>
+        <tbody>
+        {{#data}}
+        <tr>
+            <td><a href="{{attribution_url}}" target="_new">{{profile.first_name}} {{profile.last_name}}</a><br>
+              <img src="{{ratings.0.image_url_small}}"></img></td>
+            <td>{{profile.title}}</td>
+            <td><img src="{{profile.image_url}}"></img></td>
+        </tr>
+        {{/data}}
+        </tbody>
+    </table>
+</script>
+  
+
+    <script  src="js/index.js"></script>
+<!--<script type="text/javascript">
+  var api_key = 'd6effbdfbb46669a18c1d386f89c8c4a'; // Get your API key at developer.betterdoctor.com
+
+  /* specialities drop down menu */
+  var resource_url = 'https://api.betterdoctor.com/2016-03-01/specialties?skip=0&limit=20&user_key=' + api_key;
+  $.get(resource_url, function (data) {
+      // data: { meta: {<metadata>}, data: {<array[Specialty]>} }
+      var template = Handlebars.compile(document.getElementById('specialties').innerHTML);
+      document.getElementById('specialties-placeholder').innerHTML = template(data);
+
+
+  /* example output */
+  /*var example_url = 'https://api.betterdoctor.com/2016-03-01/doctors?location=37.773,-122.413,100&skip=2&limit=10&user_key=' + api_key;
+
+  $.get(example_url, function (data) {
+      // data: { meta: {<metadata>}, data: {<array[Practice]>} }
+      var template = Handlebars.compile(document.getElementById('docs-template').innerHTML);
+      document.getElementById('content-placeholder').innerHTML = template(data);
+  });*/
+
+</script>-->
+
+
+
+
+</body>
+
+</html>
