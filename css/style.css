@@ -22,5 +22,100 @@ th {
 }
 
 td, th {
-  padding-right: 20px;
+	padding-right: 20px;
+	text-align: center;
+}
+
+.myTable {
+	border: none;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+#modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  height: 300px;
+  overflow-y: auto;
+}
+
+/*#myModal br {
+	clear: both;
+}*/
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#doctor-info-pic {
+	width: 40%;
+	float: left;
+}
+
+#doctor-info {
+	padding-left: 40%;
+	padding-top: 20px;
+}
+
+.address, .specialties-list {
+    font-size: 0.8em;
+    color: #888;
+}
+
+.doctor-attr-title {
+	font-size: 0.9em;
+}
+
+.practice-name {
+	font-weight: bold;
+}
+
+.myBtn {
+	cursor: pointer;
+}
+
+.myBtn:hover {
+	background-color: rgb(230, 230, 230);
+}
+
+.similar-container {
+	width: 24%;
+	display: inline-block;
+	box-sixing: border-box;
+	text-align: center;
+	padding-bottom: 10%;
+}
+
+.similar-name {
+	font-size: 0.9em;
+	height: 20%;
 }

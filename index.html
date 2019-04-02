@@ -6,30 +6,34 @@
   <title>BetterDoctor API - Doctor Search</title>
   
   
-  
       <link rel="stylesheet" href="css/style.css">
       <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>
-
   
 </head>
 
 <body>
+
+<!-- SPECIALTY DROP DOWN MENU START -->
 <h3>Search for Doctor</h3>
+<div id="specialties-placeholder"></div>
 <script id="specialties-template" type="text/x-handlebars-template">
-  <select>
-    <option value="empty" selected></option>
+  <select id="specialty">
+    <option value="empty" selected>Select Specialty</option>
     {{#data}}
     <option value="{{uid}}">{{actor}}</option>
     {{/data}}
   </select>
 </script>
-<div id="specialties-placeholder"></div>
+<br><br>
+<button onClick="search()">Submit</button>
+<!-- SPECIALTY DROP DOWN MENU END -->
 
-<h3>BetterDoctor - Doctor Search Results</h3>
+<!-- SEARCH RESULTS START -->
 <div id="content-placeholder"></div>
 <script id="docs-template" type="text/x-handlebars-template">
-    <table>
+  <h3>BetterDoctor - List of Doctors</h3><br><br>
+    <table class="myTable">
         <thead>
             <th>Name</th>
             <th>Title</th>
@@ -37,8 +41,8 @@
         </thead>
         <tbody>
         {{#data}}
-        <tr>
-            <td><a href="{{attribution_url}}" target="_new">{{profile.first_name}} {{profile.last_name}}</a><br>
+        <tr class="myBtn" data-value="{{uid}}">
+            <td>{{profile.first_name}} {{profile.last_name}}<br>
               <img src="{{ratings.0.image_url_small}}"></img></td>
             <td>{{profile.title}}</td>
             <td><img src="{{profile.image_url}}"></img></td>
@@ -47,32 +51,63 @@
         </tbody>
     </table>
 </script>
-  
+<!-- SEARCH RESULTS END -->
+
+<!-- MODAL START -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div id="modal-content">
+    <span class="close">&times;</span>
+    <div id="modal-content-placeholder"></div><br style="clear: both;">
+    <div id="modal-similar-placeholder"></div>
+    <script id="modal-doctor-template" type="text/x-handlebars-template">
+      <div class="container">
+        {{#data}}
+        <div id="doctor-info-pic">
+          {{#profile}}
+          <p>{{first_name}} {{last_name}}, {{title}}</p>
+          <img src="{{image_url}}"></img><br>
+          {{/profile}}
+          <span class="doctor-attr-title">Specialties</span><br>
+          <span class="specialties-list">
+            {{#specialties}}
+              {{name}}<br>
+            {{/specialties}}
+          </span>
+        </div>
+
+        <div id="doctor-info">
+          <span classes="doctor-attr-title">Practices</span><br>
+          <span class="address">
+            {{#practices}}
+              <span class="practice-name">{{name}}</span><br>
+              {{visit_address.street}}<br>
+              {{visit_address.city}}, {{visit_address.state}} {{visit_address.zip}}<br>
+              {{#phones}}
+                {{type}} number: {{number}}<br>
+              {{/phones}}
+              <br>
+            {{/practices}}
+          </span>
+        </div>
+        {{/data}}
+      </div>
+    </script>
+    <script id="modal-similar-template" type="text/x-handlebars-template">
+      <h5>Similar Doctors</h5>
+      {{#data}}
+        <div class="similar-container">
+          <img src="{{profile.image_url}}"></img><br>
+          <span class="similar-name">{{profile.first_name}} {{profile.last_name}}</span>
+        </div>
+      {{/data}}
+    </script>
+  </div>
+</div>
+<!-- MODAL END -->
 
     <script  src="js/index.js"></script>
-<!--<script type="text/javascript">
-  var api_key = 'd6effbdfbb46669a18c1d386f89c8c4a'; // Get your API key at developer.betterdoctor.com
-
-  /* specialities drop down menu */
-  var resource_url = 'https://api.betterdoctor.com/2016-03-01/specialties?skip=0&limit=20&user_key=' + api_key;
-  $.get(resource_url, function (data) {
-      // data: { meta: {<metadata>}, data: {<array[Specialty]>} }
-      var template = Handlebars.compile(document.getElementById('specialties').innerHTML);
-      document.getElementById('specialties-placeholder').innerHTML = template(data);
-
-
-  /* example output */
-  /*var example_url = 'https://api.betterdoctor.com/2016-03-01/doctors?location=37.773,-122.413,100&skip=2&limit=10&user_key=' + api_key;
-
-  $.get(example_url, function (data) {
-      // data: { meta: {<metadata>}, data: {<array[Practice]>} }
-      var template = Handlebars.compile(document.getElementById('docs-template').innerHTML);
-      document.getElementById('content-placeholder').innerHTML = template(data);
-  });*/
-
-</script>-->
-
-
 
 
 </body>
