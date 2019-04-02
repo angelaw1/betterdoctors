@@ -31,4 +31,4 @@ When user filters by specific specialty<br>
 When user selects doctor<br>
 <br>
 ![alt text](screenshots/similar-doctors.png)<br>
-List of similar doctors is modal<br>
+List of similar doctors in modal<br>
