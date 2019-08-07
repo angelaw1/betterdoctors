@@ -3,36 +3,97 @@
 var api_key = 'd6effbdfbb46669a18c1d386f89c8c4a'; // Get your API key at developer.betterdoctor.com
 const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
+var latitude = "37.773";
+var longitude = "-122.413";
 
 /* specialities drop down menu */
 var resource_url = 'https://api.betterdoctor.com/2016-03-01/specialties?skip=0&limit=20&user_key=' + api_key;
 
-var data1 = $.get(resource_url);
-$.when(data1).done(function(data1) {
+var specialties_data = $.get(resource_url);
+$.when(specialties_data).done(function(specialties_data) {
   var template = Handlebars.compile(document.getElementById('specialties-template').innerHTML);
-  document.getElementById('specialties-placeholder').innerHTML = template(data1);
+  document.getElementById('specialties-placeholder').innerHTML = template(specialties_data);
 
-  search();
+  setTimeout(function() {
+  	search(); }, 
+  	500);
 });
 
+function request_location() {
+  var startPos;
+  var nudge = document.getElementById("nudge");
+
+  var showNudgeBanner = function() {
+    nudge.style.display = "block";
+  };
+
+  var hideNudgeBanner = function() {
+    nudge.style.display = "none";
+  };
+
+  var nudgeTimeoutId = setTimeout(showNudgeBanner, 5000);
+
+  var geoSuccess = function(position) {
+    hideNudgeBanner();
+    // We have the location, don't display banner
+    clearTimeout(nudgeTimeoutId);
+
+    // Do magic with location
+    startPos = position;
+    document.getElementById('startLat').innerHTML = startPos.coords.latitude;
+    document.getElementById('startLon').innerHTML = startPos.coords.longitude;
+  };
+  var geoError = function(error) {
+    switch(error.code) {
+      case error.TIMEOUT:
+        // The user didn't accept the callout
+        showNudgeBanner();
+        break;
+    }
+  };
+
+  navigator.geolocation.getCurrentPosition(geoSuccess, geoError);
+}
+
 function search() {
-	var url = 'https://api.betterdoctor.com/2016-03-01/doctors?location=37.773,-122.413,100&limit=100';
+	var search_url = 'https://api.betterdoctor.com/2016-03-01/doctors?location=' + latitude + ',' + longitude + ',100&limit=100';
 	var specialty_uid = document.getElementById("specialty").value;
 	if (specialty_uid == "empty") {
-		url = url + '&user_key=' + api_key;
+		search_url = search_url + '&user_key=' + api_key;
 	}
 	else {
-		url = url + '&specialty_uid=' + specialty_uid + '&user_key=' + api_key;
+		search_url = search_url + '&specialty_uid=' + specialty_uid + '&user_key=' + api_key;
 	}
 
-	var data = $.get(url);
-	$.when(data).done(function(data) {
-		console.log(data);
-		var template = Handlebars.compile(document.getElementById('docs-template').innerHTML);
-		document.getElementById('content-placeholder').innerHTML = template(data);
-		var doctor = document.getElementsByClassName('myBtn');
-		load_modal();
-	});
+	initiate_search(search_url, 500);
+	
+
+	function initiate_search(search_url, timeout) {
+		console.log(`wait ${timeout} milliseconds`);
+		$.ajax({
+			type:	"get",
+			url:	search_url,
+			error: function() {
+				console.log("fail");
+				setTimeout(function() {
+					initiate_search(search_url, timeout*2); },
+					timeout);
+			},
+			success: function (data) {
+
+				// var data = $.get(search_url);
+				//$.when(data).done(function(data) {
+					console.log(data);
+					var template = Handlebars.compile(document.getElementById('docs-template').innerHTML);
+					document.getElementById('content-placeholder').innerHTML = template(data);
+					var doctor = document.getElementsByClassName('myBtn');
+					load_modal();
+				//});
+			},
+		});
+	}
+
+	
 }
 
 function load_modal() {

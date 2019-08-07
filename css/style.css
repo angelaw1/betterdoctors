@@ -119,3 +119,19 @@ td, th {
 	font-size: 0.9em;
 	height: 20%;
 }
+
+.right-div {
+  width: 50%;
+  float: right;
+  text-align: center;
+}
+
+.left-div {
+  width: 50%;
+  float: left;
+  text-align: center;
+}
+
+#specialty {
+  align-self: center;
+}

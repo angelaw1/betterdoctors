@@ -6,28 +6,53 @@
   <title>BetterDoctor API - Doctor Search</title>
   
   
-      <link rel="stylesheet" href="css/style.css">
-      <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>
   
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="manifest" href="site.webmanifest">
 </head>
 
 <body>
 
 <!-- SPECIALTY DROP DOWN MENU START -->
 <h3>Search for Doctor</h3>
+<div class="left-div">
 <div id="specialties-placeholder"></div>
 <script id="specialties-template" type="text/x-handlebars-template">
   <select id="specialty">
     <option value="empty" selected>Select Specialty</option>
-    {{#data}}
-    <option value="{{uid}}">{{actor}}</option>
-    {{/data}}
+    {{#each data}}
+    <option value="{{uid}}">{{name}}</option>
+    {{/each}}
   </select>
 </script>
+</div>
+<div class="right-div">
+<input id="location" placeholder="Enter Zipcode">
+<button id="share-location" type="button" onClick="request_location()">Use My Location</button>
+</div>
 <br><br>
-<button onClick="search()">Submit</button>
+
+<button type="button" onClick="search()">Submit</button>
 <!-- SPECIALTY DROP DOWN MENU END -->
+
+<div style="position:relative;width:200px;height:25px;border:0;padding:0;margin:0;">
+  <select style="position:absolute;top:0px;left:0px;width:200px; height:25px;line-height:20px;margin:0;padding:0;"
+          onchange="document.getElementById('displayValue').value=this.options[this.selectedIndex].text; document.getElementById('idValue').value=this.options[this.selectedIndex].value;">
+    <option></option>
+    <option value="one">one</option>
+    <option value="two">two</option>
+    <option value="three">three</option>
+  </select>
+  <input type="text" name="displayValue" id="displayValue" 
+         placeholder="add/select a value" onfocus="this.select()"
+         style="position:absolute;top:0px;left:0px;width:183px;width:180px\9;#width:180px;height:23px; height:21px\9;#height:18px;border:1px solid #556;"  >
+  <input name="idValue" id="idValue" type="hidden">
+</div>
 
 <!-- SEARCH RESULTS START -->
 <div id="content-placeholder"></div>
