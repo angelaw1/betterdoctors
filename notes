@@ -1,0 +1,9 @@
+problems:
+I ran into the problem of sending too many requests (list of specialties in drop down menu and initial 
+search results of doctors that displayed right when the page first loads)
+"429 - Over the rate limit
+
+Status code: 429 
+Error code: 9999 
+Message: "We have detected excessive traffic coming from this IP. Allowed: 40 request in 60 seconds. Minimum time between requests 0.5 seconds." 
+Details: Too much traffic. "
