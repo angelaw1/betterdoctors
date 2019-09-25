@@ -1,6 +1,7 @@
 // This code depends on jQuery Core and Handlebars.js 
 
 var api_key = 'd6effbdfbb46669a18c1d386f89c8c4a'; // Get your API key at developer.betterdoctor.com
+var google_api = 'AIzaSyDHPHFFGO3uVJMJnn7Jl0Su6L1VVPWRGZE';
 const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
 var latitude = "37.773";
@@ -21,35 +22,52 @@ $.when(specialties_data).done(function(specialties_data) {
 
 function request_location() {
   var startPos;
-  var nudge = document.getElementById("nudge");
-
-  var showNudgeBanner = function() {
-    nudge.style.display = "block";
-  };
-
-  var hideNudgeBanner = function() {
-    nudge.style.display = "none";
-  };
-
-  var nudgeTimeoutId = setTimeout(showNudgeBanner, 5000);
 
   var geoSuccess = function(position) {
-    hideNudgeBanner();
     // We have the location, don't display banner
-    clearTimeout(nudgeTimeoutId);
+    // clearTimeout(nudgeTimeoutId);
 
     // Do magic with location
     startPos = position;
-    document.getElementById('startLat').innerHTML = startPos.coords.latitude;
-    document.getElementById('startLon').innerHTML = startPos.coords.longitude;
+    latitude = startPos.coords.latitude;
+    longitude = startPos.coords.longitude;
+
+    var geocode_url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + latitude + ',' + longitude + '&key=' + google_api;
+
+    make_geocode_request(geocode_url);
+
+    function make_geocode_request(geocode_url) {
+    	var geocode_data = $.get(geocode_url);
+    	$.when(geocode_data).done(function(geocode_data) {
+    		console.log(geocode_data);
+
+    		address_comp = geocode_data.results[0].address_components;
+    		for (i = 0; i < address_comp.length; i++) {
+    			if (address_comp[i].types.includes("postal_code")) {
+					var loc_element = document.getElementById("location");
+					loc_element.value = address_comp[i].long_name;
+    			}
+    		}
+    		
+    	});
+    }
   };
+
   var geoError = function(error) {
     switch(error.code) {
-      case error.TIMEOUT:
-        // The user didn't accept the callout
-        showNudgeBanner();
-        break;
-    }
+		case error.PERMISSION_DENIED:
+			console.log("User denied the request for Geolocation.");
+			break;
+		case error.POSITION_UNAVAILABLE:
+			console.log("Location information is unavailable.");
+			break;
+		case error.TIMEOUT:
+			console.log("The request to get user location timed out.");
+			break;
+		case error.UNKNOWN_ERROR:
+			console.log("An unknown error occurred.");
+			break;
+	}
   };
 
   navigator.geolocation.getCurrentPosition(geoSuccess, geoError);
@@ -58,6 +76,8 @@ function request_location() {
 function search() {
 	var search_url = 'https://api.betterdoctor.com/2016-03-01/doctors?location=' + latitude + ',' + longitude + ',100&limit=100';
 	var specialty_uid = document.getElementById("specialty").value;
+	var zip = document.getElementById("location").innerHTML;
+
 	if (specialty_uid == "empty") {
 		search_url = search_url + '&user_key=' + api_key;
 	}

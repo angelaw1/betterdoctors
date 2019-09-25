@@ -7,6 +7,7 @@
   
   
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>
   
@@ -19,25 +20,37 @@
 <body>
 
 <!-- SPECIALTY DROP DOWN MENU START -->
-<h3>Search for Doctor</h3>
-<div class="wide-block">
-<div class="left-div">
-<div id="specialties-placeholder"></div>
-<script id="specialties-template" type="text/x-handlebars-template">
-  <select id="specialty">
-    <option value="empty" selected>Select Specialty</option>
-    {{#each data}}
-    <option value="{{uid}}">{{name}}</option>
-    {{/each}}
-  </select>
-</script>
-<br><br>
-<button type="button" onClick="search()">Submit</button>
-</div>
-<div class="right-div">
-<input id="location" placeholder="Enter Zipcode">
-<button id="share-location" type="button" onClick="request_location()">Use My Location</button>
-</div>
+<div class="background-image">
+  <div class="container-fluid h-100">
+    <div class="row h-100">
+      <div class="col-xl-12 my-auto">
+        <h3 class="text-center">Search for Doctor</h3>
+        <div class="wide-block">
+          <div class="left-div">
+            <div id="specialties-placeholder"></div>
+            <script id="specialties-template" type="text/x-handlebars-template">
+              <select id="specialty">
+                <option value="empty" selected>Select Specialty</option>
+                {{#each data}}
+                <option value="{{uid}}">{{name}}</option>;//
+                {{/each}}
+              </select>
+            </script>
+          </div>
+          <div class="right-div">
+            <input id="location" placeholder="Enter Zipcode">
+            <button id="share-location" type="button" onClick="request_location()">Use My Location</button>
+          </div>
+          <div class="text-center">
+            <br><br>
+            <button type="button" onClick="search()">Submit</button>
+            <br><br>
+            <div id="error-message"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- SPECIALTY DROP DOWN MENU END -->
