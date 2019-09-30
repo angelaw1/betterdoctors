@@ -78,6 +78,7 @@ function search() {
 	var specialty_uid = document.getElementById("specialty").value;
 	var zip = document.getElementById("location").innerHTML;
 
+	console.log("specialty uid: " + specialty_uid);
 	if (specialty_uid == "empty") {
 		search_url = search_url + '&user_key=' + api_key;
 	}
